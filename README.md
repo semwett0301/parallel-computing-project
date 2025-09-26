@@ -1,92 +1,183 @@
-# parallel_computing
+# Parallel Computing Project
 
+## Overview
 
+This project implements a parallel computing solution for finding similarities between datasets using the Jaccard Index algorithm. The implementation uses MPI (Message Passing Interface) to distribute computational tasks across multiple processes, enabling efficient analysis of large datasets.
 
-## Getting started
+## Problem Description
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+Finding similarities between datasets involves analyzing the degree of resemblance or correspondence between different sets of data. This is a crucial task in various fields including data integration, data cleaning, data matching, machine learning, and data exploration. The goal is to identify common patterns, relationships, or entities within datasets to derive meaningful insights.
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+## Algorithm: Jaccard Index
 
-## Add your files
-
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+The Jaccard Index quantifies the overlap between two sets by calculating the ratio of the size of their intersection to the size of their union:
 
 ```
-cd existing_repo
-git remote add origin https://gitlab.com/semen.mokrov.ozu/parallel_computing.git
-git branch -M main
-git push -uf origin main
+J(A, B) = |A ∩ B| / |A ∪ B|
 ```
 
-## Integrate with your tools
+Where:
+- `|A ∩ B|` represents the size of the intersection of sets A and B
+- `|A ∪ B|` represents the size of their union
 
-- [ ] [Set up project integrations](https://gitlab.com/semen.mokrov.ozu/parallel_computing/-/settings/integrations)
+The resulting Jaccard Index ranges from 0 to 1:
+- **0**: No common elements (maximum dissimilarity)
+- **1**: Identical sets (maximum similarity)
 
-## Collaborate with your team
+## Technology Stack
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Automatically merge when pipeline succeeds](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+- **Programming Language**: C (C99 specification)
+- **IDE**: CLion
+- **Build System**: CMake
+- **Parallel Computing**: MPI library (`<mpi.h>`)
 
-## Test and Deploy
+## Features
 
-Use the built-in continuous integration in GitLab.
+- **Serial Algorithm**: Sequential calculation of Jaccard index for dataset pairs
+- **Parallel Algorithm**: Distributed processing using MPI for improved performance
+- **Data Normalization**: Automatic scaling of input data to [0,100] range
+- **Multiple Format Support**: UTF-8 text files with comma-separated values
+- **Comprehensive Testing**: Performance analysis with various dataset sizes
+### Prerequisites
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing(SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+- C compiler with C99 support
+- MPI library (MPICH or OpenMPI)
+- CMake (version 3.0 or higher)
+- Bash shell (for automation scripts)
 
-***
+### Quick Start with Bash Scripts
 
-# Editing this README
+The project includes several bash scripts to automate common tasks:
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thank you to [makeareadme.com](https://www.makeareadme.com/) for this template.
+1. **Clone the repository:**
+```bash
+git clone https://gitlab.com/semen.mokrov.ozu/parallel_computing.git
+cd parallel_computing
+```
 
-## Suggestions for a good README
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+2. **Build the project:**
+```bash
+./build.sh
+```
 
-## Name
-Choose a self-explaining name for your project.
+3. **Generate test data:**
+```bash
+./generate_data.sh
+```
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+4. **Run the program:**
+```bash
+./run.sh -n 4 2 resources/1/1.txt 1000000 resources/2/1.txt 1000000
+```
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+Execute the program using MPI with the following command:
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+```bash
+mpiexec -n <number_of_processes> ./cmake-build-release/parallel_computing_project.exe
+```
 
 ## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+### Input Format
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+The program expects:
+1. Number of datasets
+2. Pathname for each dataset file
+3. Number of values in each dataset
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+### Dataset Format
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+- Files must contain comma-separated values
+- Values are automatically normalized to [0,100] range
+- Supported formats: Any UTF-8 text file
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+### Example Input
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+```
+3
+resources/1/1.txt
+resources/2/1.txt
+resources/3/1.txt
+1000000
+1000000
+1000000
+```
 
-## License
-For open source projects, say how it is licensed.
+## Performance Analysis
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+### Testing Results
+
+The project includes comprehensive performance testing with datasets ranging from 100,000 to 10,000,000 elements using 1, 3, 6, 8, 10, and 12 processes.
+
+#### Key Findings:
+
+1. **Scalability**: Performance improves with increasing number of processes for larger datasets
+2. **Overhead**: Small datasets may show decreased performance with more processes due to MPI overhead
+3. **Optimal Range**: Best performance observed with 8-12 processes for large datasets
+
+#### Sample Performance Data:
+
+| Dataset Size | 1 Process | 3 Processes | 6 Processes | 8 Processes | 10 Processes | 12 Processes |
+|--------------|-----------|-------------|-------------|-------------|--------------|--------------|
+| 1M elements  | 1190ms    | 905ms       | 887ms       | 575ms       | 392ms        | 263ms        |
+| 2M elements  | 1180ms    | 942ms       | 917ms       | 646ms       | 425ms        | 283ms        |
+| 5M elements  | 1252ms    | 1017ms      | 1191ms      | 733ms       | 503ms        | 349ms        |
+| 10M elements | 1261ms    | 1200ms      | 1170ms      | 894ms       | 691ms        | 559ms        |
+
+## Project Structure
+
+```
+parallel-computing-project/
+├── CMakeLists.txt          # CMake configuration
+├── main.c                  # Main program source
+├── report.pdf              # Detailed project report
+├── resources/              # Test datasets
+│   ├── 1/                 # Dataset 1 files
+│   ├── 2/                 # Dataset 2 files
+│   └── ...                # Additional datasets
+├── res/                   # SLURM job outputs
+└── README.md              # This file
+```
+
+## Algorithm Implementation
+
+### Serial Algorithm
+1. Count frequency of each element (0-100) in each dataset
+2. Compare frequency distributions for all dataset pairs
+3. Calculate Jaccard index using intersection and union
+
+### Parallel Algorithm
+1. Distribute dataset processing across MPI processes using `MPI_Scatter`
+2. Each process counts frequencies for assigned data portions
+3. Gather results using `MPI_Gather`
+4. Broadcast results to all processes using `MPI_Bcast`
+5. Calculate similarity indices
+
+## Future Improvements
+
+1. **Pair-wise Parallelization**: Parallelize the comparison of dataset pairs
+2. **Topological Networks**: Implement hypercube or ring topologies for better process communication
+3. **Process Optimization**: Limit processes to even numbers matching dataset sizes
+4. **Memory Optimization**: Implement more efficient data structures for large datasets
+
+## Testing
+
+The project includes comprehensive testing with:
+- Small datasets (100K-1M elements) for algorithm validation
+- Large datasets (1M-10M elements) for performance analysis
+- Mixed dataset sizes for robustness testing
+- Supercomputer testing on high-performance computing clusters
+
+## Documentation
+
+For detailed technical documentation, algorithm analysis, and comprehensive test results, please refer to:
+
+**[📄 Project Report (PDF)](report.pdf)**
+
+## References
+
+- [Analytics Vidhya - String Similarity Metrics](https://www.analyticsvidhya.com/blog/2021/02/a-simple-guide-to-metrics-for-calculating-string-similarity/)
+- [Ozyegin University LMS](https://lms.ozyegin.edu.tr/course/view.php?id=4291)
+- [MPI Forum Documentation](https://www.mpi-forum.org/docs/)
+- [MPICH Documentation](https://www.mpich.org/static/docs/latest/)
+- [CU Research Computing - MPI C Guide](https://curc.readthedocs.io/en/latest/programming/MPI-C.html)
